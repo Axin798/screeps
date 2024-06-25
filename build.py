@@ -41,27 +41,42 @@ def possible_rollup_binary_paths(config):
 
     :type config: Configuration
     """
+    # Check if rollup exists in project's local node_modules/.bin directory
+    npm_bin_dir = os.path.join(config.base_dir, 'node_modules', '.bin')
+    if os.path.exists(npm_bin_dir):
+        paths = [
+            os.path.join(npm_bin_dir, 'rollup.cmd'),  # Windows
+            os.path.join(npm_bin_dir, 'rollup.ps1'),  # Windows PowerShell
+            os.path.join(npm_bin_dir, 'rollup')  # Unix/Linux
+        ]
+        valid_paths = [path for path in paths if os.path.exists(path)]
+        if valid_paths:
+            return valid_paths
+
+    # If not found locally, try using npm global installation
     npm = config.find_misc_executable('npm')
     if npm is None:
-        raise Exception("npm not found! tried paths: {}".format(possible_rollup_binary_paths(config)))
+        raise Exception("npm not found!")
 
-    args = [npm, 'bin']
+    args = [npm, 'root', '-g']
     ran_npm = subprocess.run(args, capture_output=True, encoding='utf-8')
 
     if ran_npm.returncode != 0:
         raise Exception("npm bin failed. exit code: {}. command line '{}'. stderr: {}. stdout: {}"
                         .format(ran_npm.returncode, "' '".join(args), ran_npm.stderr, ran_npm.stdout))
-    npm_bin_dir = ran_npm.stdout.strip()
-    # if we're running on Windows, then we need to explicitly use rollup.cmd or rollup.ps1 rather than rollup - rollup will still exist, it will just be an unexecutable shell file ._.
+    npm_global_root = ran_npm.stdout.strip()
+    npm_bin_dir = os.path.join(npm_global_root, 'bin')
+
+    # Return appropriate paths based on OS
     if os.name == 'nt':
         return [
             os.path.join(npm_bin_dir, 'rollup.cmd'),
             os.path.join(npm_bin_dir, 'rollup.ps1'),
-            os.path.join(npm_bin_dir, 'rollup'),
+            os.path.join(npm_bin_dir, 'rollup')
         ]
     else:
         return [
-            os.path.join(npm_bin_dir, 'rollup'),
+            os.path.join(npm_bin_dir, 'rollup')
         ]
 
 
