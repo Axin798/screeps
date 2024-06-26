@@ -11,7 +11,20 @@ __pragma__('noalias', 'update')
 
 
 def health_check(creep):
-    if creep.ticksToLive < 10:
-        Memory.taskList.append({'body': [element['type'] for element in creep.body], 'name': creep.name})
-        print("【房间{}】：{}即将死亡，已推送生成任务".format(creep.room.name, creep.name))
-        creep.say("我即将离开，已推送生成任务，请spawn准备生成")
+    if not creep.memory.isPushSpawnTask and creep.ticksToLive < 20:
+        closest_spawn = creep.pos.findClosestByPath(FIND_MY_SPAWNS)
+        if not any(element['type'] == 'CLAIM' for element in creep.body) and creep.pos.inRangeTo(closest_spawn, 1):
+            if creep.pos.isNearTo(closest_spawn) and not closest_spawn.spawning:
+                closest_spawn.renewCreep(creep)
+            else:
+                creep.moveTo(closest_spawn)
+        else:
+            spawns = creep.room.find(FIND_MY_SPAWNS)
+            if len(spawns) > 0:
+                target_spawn = _.max(spawns, iteratee=lambda s: s.store.getFreeCapacity(RESOURCE_ENERGY))
+                target_spawn.memory.taskList.append(
+                    {'body': [element['type'] for element in creep.body], 'name': creep.name})
+                creep.memory.isPushSpawnTask = True
+                print("【房间{}】：{}即将死亡，已向{}推送生成任务".format(creep.room.name, creep.name, target_spawn.name))
+            else:
+                print("【房间{}】：{}即将死亡，无法推送生成任务，请检查spawn状态".format(creep.room.name, creep.name))
