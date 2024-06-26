@@ -11,7 +11,7 @@ BIG_HARVESTER = {
 }
 
 SMALL_BUILDER = {
-    'body': [WORK, CARRY, MOVE, MOVE, MOVE],
+    'body': [WORK, CARRY, MOVE, MOVE],
     'memory': {'role': 'builder', 'level': 'small'}
 }
 
@@ -38,4 +38,14 @@ SMALL_UPGRADER = {
 BIG_UPGRADER = {
     'body': [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
     'memory': {'role': 'upgrader', 'level': 'big'}
+}
+
+SMALL_RESTORER = {
+    'body': [WORK, CARRY, MOVE, MOVE, MOVE],
+    'memory': {'role': 'restorer', 'level': 'small'}
+}
+
+BIG_RESTORER = {
+    'body': [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
+    'memory': {'role': 'restorer', 'level': 'big'}
 }

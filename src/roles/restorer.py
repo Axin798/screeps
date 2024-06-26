@@ -84,9 +84,8 @@ def run_repair(creep):
                 target = _.min(targets, iteratee=lambda site: site.hits)
                 creep.memory.target = target.id
             else:
-                print("【房间{}】：[{}]没有需要修复的建筑".format(creep.room.name, creep.name))
                 return
-        is_close = creep.pos.isRangeTo(target, 3)
+        is_close = creep.pos.inRangeTo(target, 3)
         if is_close:
             result = creep.repair(target)
             if result != 0:

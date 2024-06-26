@@ -50,7 +50,7 @@ def main():
         elif creep.memory.role == 'upgrader':
             upgrader_num += 1
             run_upgrade(creep)
-        elif creep.memory.role == 'restore':
+        elif creep.memory.role == 'restorer':
             restore_num += 1
             run_repair(creep)
 
@@ -84,6 +84,8 @@ def main():
                     spawn.createCreep(SMALL_UPGRADER.body, SMALL_UPGRADER.memory)
                 if harvester_num < 1:
                     spawn.createCreep(SMALL_HARVESTER.body, SMALL_HARVESTER.memory)
+                if restore_num < 1:
+                    spawn.createCreep(SMALL_RESTORER.body, SMALL_RESTORER.memory)
 
 
 module.exports.loop = main

@@ -87,7 +87,7 @@ def run_carry(creep):
         is_close = creep.pos.isNearTo(target)
         if is_close:
             result = creep.transfer(target, RESOURCE_ENERGY)
-            if result != 0:
+            if result != 0 and result != -8:
                 error_message = TRANSFER_ERROR_CODES[result]
                 print(
                     "【房间{}】：[{}]尝试向{}填充能量失败，原因为:{}".format(creep.room.name, creep.name, target,
