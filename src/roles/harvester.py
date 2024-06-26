@@ -18,6 +18,9 @@ def run_harvest(creep):
     """
     if creep.memory.target:
         target = Game.getObjectById(creep.memory.target)
+        if not target:
+            del creep.memory.target
+            return
     else:
         container = creep.room.find(FIND_STRUCTURES, {
             'filter': lambda s: s.structureType == STRUCTURE_CONTAINER and s.isActive() and s.store.getFreeCapacity(

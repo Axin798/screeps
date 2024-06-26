@@ -31,6 +31,9 @@ def run_build(creep):
         # 如果有保存的来源，则使用它
         if creep.memory.source:
             source = Game.getObjectById(creep.memory.source)
+            if not source:
+                del creep.memory.source
+                return
         else:
             # 按照storage、container、source的顺序寻找来源
             source = creep.pos.findClosestByPath(FIND_STRUCTURES,
@@ -72,11 +75,14 @@ def run_build(creep):
         build_or_repair = creep.memory.build_or_repair
         if creep.memory.target:
             target = Game.getObjectById(creep.memory.target)
+            if not target:
+                del creep.memory.target
+                return
         else:
             # 获取房间中的建筑工地
             targets = creep.room.find(FIND_MY_CONSTRUCTION_SITES)
             if targets.length > 0:
-                target = _.min(targets, iteratee=lambda e: e.progress_total - e.progress)
+                target = _.min(targets, iteratee=lambda e: e.progressTotal - e.progress)
                 creep.memory.target = target.id
                 build_or_repair = 0
             else:

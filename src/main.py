@@ -78,8 +78,8 @@ def main():
             if Game.gcl.level < 5:
                 if builder_num < 1:
                     spawn.createCreep(SMALL_BUILDER.body, SMALL_BUILDER.memory)
-                # elif carrier_num < 2:
-                #     spawn.createCreep(SMALL_CARRIER.body, SMALL_CARRIER.memory)
+                elif carrier_num < 1:
+                    spawn.createCreep(SMALL_CARRIER.body, SMALL_CARRIER.memory)
                 if upgrader_num < 1:
                     spawn.createCreep(SMALL_UPGRADER.body, SMALL_UPGRADER.memory)
                 if harvester_num < 1:

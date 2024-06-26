@@ -31,6 +31,9 @@ def run_carry(creep):
         # 如果有保存的来源，则使用它
         if creep.memory.source:
             source = Game.getObjectById(creep.memory.source)
+            if not source:
+                del creep.memory.source
+                return
         else:
             # 按照container、source的顺序寻找来源
             source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
@@ -65,6 +68,9 @@ def run_carry(creep):
         # 如果有保存的目标，则使用它
         if creep.memory.target:
             target = Game.getObjectById(creep.memory.target)
+            if not target:
+                del creep.memory.target
+                return
         else:
             # 按照extension、storage、spawn的顺序寻找目标
             target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
